@@ -1,0 +1,236 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+	layout:decorate="~{fragments/layout}">
+
+<div layout:fragment="corpo">
+	<form id="formUsuario">
+		<div class="content-body">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">CADASTRO DE USUÁRIOS</h4>
+								<button type="button" class="btn btn-primary" data-toggle="modal"
+									data-target="#usuarioPesquisaModal">
+									Pesquisar usuário
+								</button>
+								
+								<button type="button" class="btn btn-success" data-toggle="modal"
+									data-target="#modalUsuario">Cadastrar Usuários</button>
+							</div>
+
+							<div class="card-body">
+								<div class="table-responsive">
+									<div>
+										<table class="table table-striped table-hover table-sm">
+											<thead>
+												<tr style="font-size: 9pt; color: black;">
+													<th>#</th>
+													<th>Usuários cadastrados</th>
+													<th>Editar</th>
+													<th>Excluir</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="usuarios : ${listarUsuario}"
+													style="font-size: 9pt; color: black;">
+													<td th:text="${usuarios.id}"></td>
+													<td th:text="${usuarios.nome}"></td>
+
+													<td><a th:href="@{/buscarusuario/(id=${usuarios.id})}"
+															class="btn btn-success btnEdit">Editar</a>
+													</td>
+
+													<td><a th:href="@{/deletarusuario/(id=${usuarios.id})}"
+															class="btn btn-danger" id="deleteButton">Excluir</a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<!-- PAGINAÇÃO TABELA USUÁRIOS -->
+									<nav aria-label="Page navigation example" style="color: black; font-size: 12px;">
+										
+										Total de usuários: [[${totalItems}]] | Página [[${currentPage}]] de
+										[[${totalPages}]]
+										
+										<ul class="pagination">
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{/cad_usuario/usuario/1}">Atual</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Atual</span>
+											</li>
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{'/cad_usuario/usuario/' + ${currentPage - 1}}">Anterior</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Anterior</span>
+											</li>
+											
+											<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}">
+												<a class="page-link" th:href="@{'/cad_usuario/usuario/' + ${i}}"
+														style="color: darkblue;">[[${i}]]</a></li>
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_usuario/usuario/' + ${currentPage + 1}}">Próxima</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Próxima</span>
+											</li>
+											
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_usuario/usuario/' + ${totalPages}}">Última</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Última</span>
+											</li>
+										</ul>
+									</nav>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<!-- INICIO DE MODAL CADASTRO DE USUARIO -->
+	<div class="modal fade" id="modalUsuario" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form th:action="@{/salvarUsuario}" method="post" onsubmit="return validarCamposUsuarios()?true : false">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">CADASTRO DE USUÁRIOS</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+
+							<div class="form-group col-md-12">
+								<label for="nome" style="color: black;">Usuário</label>
+								<input type="text" class="form-control" id="nome" name="nome">
+								<small id="nome-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-12">
+								<label for="senha" style="color: black;">Senha</label>
+								<input type="password" class="form-control" id="senha" name="senha">
+								<small id="senha-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-12">
+								<label for="confirmar" style="color: black;">Confirmar senha</label>
+								<input type="password" class="form-control" id="confirmar" name="confirmar">
+								<small id="confirmar-error" style="color: red;"></small>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+							<button type="submit" class="btn btn-success">Salvar</button>
+						</div>
+						<input type="hidden" id="id" name="id">
+					</div>
+				</div>
+			</div>
+			<!-- FIM DE MODAL DE CADASTRO DE USUARIO -->
+		</form>
+	</div>
+
+	<!-- MODAL EDIÇÃO DE USUARIO -->
+	<div class="modal fade" id="editModalUsuario" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form th:action="@{/atualizarusuario}" method="put">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">EDITAR CADASTRO DE USUÁRIOS</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="form-group col-md-12">
+								<label for="nome" style="color: black;">Usuário</label>
+								<input type="text" class="form-control" id="nomeEdit" name="nome">
+								<small id="nome-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-12">
+								<label for="senha" style="color: black;">Senha</label>
+								<input type="password" class="form-control" id="senhaEdit" name="senha">
+								<small id="senha-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-12">
+								<label for="confirmar" style="color: black;">Confirmar senha</label>
+								<input type="password" class="form-control" id="confirmarEdit" name="confirmar">
+								<small id="confirmar-error" style="color: red;"></small>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+							<button type="submit" class="btn btn-success">Salvar</button>
+						</div>
+						<input type="hidden" id="idEdit" name="id">
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<!-- MODAL EDITAR USUÁRIO -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Confirmar</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p style="color: black;">Você deseja excluir o usuário?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+					<a href="" id="delRef" class="btn btn-danger">Sim</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- MODAL PESQUISAR USUÁRIO -->
+	<div class="modal fade" id="usuarioPesquisaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-backdrop="static">
+		<form th:action="@{/pesquisarusuario}" method="post">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">PESQUISA DE USUÁRIO</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" aria-label="Recipient's username"
+								id="usuariopesquisa" name="usuariopesquisa" aria-describedby="basic-addon2">
+							<div class="input-group-append">
+								<button class="btn btn-success btnPesquisa" type="submit">Pesquisar</button>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+</html>

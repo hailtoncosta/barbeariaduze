@@ -1,0 +1,277 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+	layout:decorate="~{fragments/layout}">
+
+
+<id layout:fragment="corpo">
+	<div class="content-body">
+		<!-- row -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">CADASTRO DE AGENDAMENTOS</h4>
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+									data-target="#agendamentoPesquisaModal">
+									Pesquisar agendamento
+							</button>
+							<button type="button" class="btn btn-success" data-toggle="modal"
+								data-target="#modalAgendamento">Cadastrar Agendamentos</button>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<div>
+									<table class="table table-striped table-hover table-sm">
+										<thead>
+											<tr style="font-size: 9pt; color: black;">
+												<th>#</th>
+												<th>Cliente</th>
+												<th>Serviço</th>
+												<th>Valor</th>
+												<th>Observação</th>
+												<th>Editar</th>
+												<th>Excluir</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="agendamentos : ${listarAgendamento}"
+												style="font-size: 9pt; color: black;">
+												<td th:text="${agendamentos.id}"></td>
+												<td th:text="${agendamentos.cliente}"></td>
+												<td th:text="${agendamentos.servico}"></td>
+												<td th:text="${#strings.replace(#numbers.formatCurrency(agendamentos.valor), '.00', '')}"></td>
+												<td th:text="${agendamentos.observacao}"></td>
+
+												<td><a th:href="@{/buscaragendamento/(id=${agendamentos.id})}"
+														class="btn btn-success btnEdit">Editar</a>
+												</td>
+
+												<td><a th:href="@{/deletaragendamento/(id=${agendamentos.id})}"
+														class="btn btn-danger" id="deleteButton">Excluir</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<!-- PAGINAÇÃO TABELA AGENDAMENTO -->
+									<nav aria-label="Page navigation example" style="color: black; font-size: 12px;">
+										
+										Total de agendamentos: [[${totalItems}]] | Página [[${currentPage}]] de
+										[[${totalPages}]]
+										
+										<ul class="pagination">
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{/cad_agendamento/agendamento/1}">Atual</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Atual</span>
+											</li>
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{'/cad_agendamento/agendamento/' + ${currentPage - 1}}">Anterior</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Anterior</span>
+											</li>
+											
+											<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}">
+												<a class="page-link" th:href="@{'/cad_agendamento/agendamento/' + ${i}}"
+														style="color: darkblue;">[[${i}]]</a></li>
+											
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_agendamento/agendamento/' + ${currentPage + 1}}">Próxima</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Próxima</span>
+											</li>
+											
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_agendamento/agendamento/' + ${totalPages}}">Última</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Última</span>
+											</li>
+										</ul>
+									</nav>
+									
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- INICIO DE MODAL CADASTRO DE CLIENTES -->
+	<div class="modal fade" id="modalAgendamento" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form th:action="@{/salvarAgendamento}" method="post"
+			onsubmit="return validarCamposAgendamentos()?true : false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">CADASTRO DE AGENDAMENTOS</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="cliente" style="color: black;">Cliente</label>
+								<select class="custom-select" id="cliente" name="cliente">
+									<option value=""></option>
+									<option th:each="cliente : ${listarCliente}" th:value="${cliente.nome}"
+										th:text="${cliente.nome}">
+									</option>
+								</select>
+								<small id="cliente-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="servico" style="color: black;">Serviço</label>
+								<select class="custom-select" id="servico" name="servico">
+									<option value=""></option>
+									<option th:each="servico : ${listarServico}" th:value="${servico.descricao}"
+										th:text="${servico.descricao}"></option>
+								</select>
+								<small id="servico-error" style="color: red;"></small>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="valor" style="color: black;">Valor</label>
+								<input type="text" class="form-control" id="valor" name="valor" onKeyUp="mascaraMoeda(this, event)">
+								<small id="valor-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="observacao" style="color: black;">Observação</label>
+								<input type="text" class="form-control" id="observacao" name="observacao">
+								<small id="observacao-error" style="color: red;"></small>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-success">Salvar</button>
+					</div>
+					<input type="hidden" id="id" name="id">
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- FIM DE MODAL DE CADASTRO DE CLIENTES -->
+
+	<!-- INICIO DE MODAL CADASTRO DE CLIENTES -->
+	<div class="modal fade" id="editModalAgendamento" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form th:action="@{/atualizaragendamento}" method="put">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">CADASTRO DE AGENDAMENTOS</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="cliente">Cliente</label>
+								<select class="custom-select" id="clienteEdit" name="cliente">
+									<option value=""></option>
+									<option th:each="cliente : ${listarCliente}" th:value="${cliente.nome}"
+										th:text="${cliente.nome}">
+									</option>
+								</select>
+								<small id="cliente-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="servico">Serviço</label>
+								<select class="custom-select" id="servicoEdit" name="servico">
+									<option value=""></option>
+									<option th:each="servico : ${listarServico}" th:value="${servico.descricao}"
+										th:text="${servico.descricao}"></option>
+								</select>
+								<small id="servico-error" style="color: red;"></small>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="valor">Valor</label>
+								<input type="text" class="form-control" id="valorEdit" name="valor">
+								<small id="valor-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="observacao">Observação</label>
+								<input type="text" class="form-control" id="observacaoEdit" name="observacao">
+								<small id="observacao-error" style="color: red;"></small>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-success">Salvar</button>
+					</div>
+					<input type="hidden" id="idEdit" name="id">
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- FIM DE MODAL DE CADASTRO DE CLIENTES -->
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Confirmar</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p style="color: black;">Você deseja excluir o agendamento? </p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+					<a href="" id="delRef" class="btn btn-danger">Sim</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- MODAL PESQUISAR AGENDAMENTO -->
+	<div class="modal fade" id="agendamentoPesquisaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-backdrop="static">
+		<form th:action="@{/pesquisarcliente}" method="post">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">PESQUISA DE AGENDAMENTO</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" aria-label="Recipient's username"
+								id="agendamentopesquisa" name=""agendamentopesquisa"" aria-describedby="basic-addon2">
+							<div class="input-group-append">
+								<button class="btn btn-success btnPesquisa" type="submit">Pesquisar</button>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</id>
+
+
+</html>

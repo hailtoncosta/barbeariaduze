@@ -1,0 +1,175 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Barbearia Du Zé </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/vendor/owl-carousel/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/owl-carousel/css/owl.theme.default.min.css}">
+    <link th:href="@{/vendor/jqvmap/css/jqvmap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+        <div class="nav-header">
+            <a href="/" class="brand-logo">
+                <img class="brand-title" th:src="@{/images/corte-de-barba.png}" alt="">
+                <h4 style="color: white;">Bardearia Du Zé</h4>
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            <div class="search_bar dropdown">
+                            </div>
+                        </div>
+
+                        <ul class="navbar-nav header-right">
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-account"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="./app-profile.html" class="dropdown-item">
+                                        <i class="icon-user"></i>
+                                        <span class="ml-2">Profile </span>
+                                    </a>
+                                    <a href="./email-inbox.html" class="dropdown-item">
+                                        <i class="icon-envelope-open"></i>
+                                        <span class="ml-2">Inbox </span>
+                                    </a>
+                                    <a href="/login" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Menu</li>
+                    <li class="nav-label">CADASTROS</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-app-store"></i><span class="nav-text">Cadastros
+								</span></a>
+                        <ul aria-expanded="false">
+							<li><a href="/cad_usuario/usuario">Usuários</a></li>
+                            <li><a href="/cad_cliente/cliente">Clientes</a></li>
+                            <li><a href="/cad_agendamento/agendamento">Agendamentos</a></li>
+                            <li><a href="/cad_servico/servico">Serviços</a></li>
+                        </ul>
+                        <!--
+                        <ul aria-expanded="false">
+                            <li><a href="./app-profile.html">Clientes</a></li>
+                            <li><a href="./app-profile.html">Agendamentos</a></li>
+                            <li><a href="./app-profile.html">Serviços</a></li>
+                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Email</a>
+                                <ul aria-expanded="false">
+                                    <li><a href="./email-compose.html">Compose</a></li>
+                                    <li><a href="./email-inbox.html">Inbox</a></li>
+                                    <li><a href="./email-read.html">Read</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="./app-calender.html">Calendar</a></li>
+                        </ul>
+                        -->
+                    </li>
+                    
+                    <li class="nav-label">Relatórios</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-plug"></i><span class="nav-text">Relatórios</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="./uc-select2.html">Listar usuários</a></li>
+                            <li><a href="./uc-nestable.html">Listar clientes</a></li>
+                            <li><a href="./uc-noui-slider.html">Listar agendamentos</a></li>
+                            <li><a href="./uc-sweetalert.html">Listar serviços</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <form action="" layout:fragment="corpo">
+	        <div class="content-body">
+	            <!-- row -->
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-xl-12 col-lg-12 col-md-12">
+	                        <div class="card">
+	                            <div class="card-header">
+	                                <h4 class="card-title">Tela Principal</h4>
+	                            </div>
+	                            <div class="card-body">
+	
+	                        	</div>
+	                    	</div>
+	                	</div>
+	
+	            	</div>
+	        	</div>
+	        </div>
+	     </form>
+    </div>
+
+    <script th:src="@{/vendor/global/global.min.js}"></script>
+    <script th:src="@{/js/quixnav-init.js}"></script>
+    <script th:src="@{/js/custom.min.js}"></script>
+
+    <script th:src="@{/vendor/raphael/raphael.min.js}"></script>
+    <script th:src="@{/vendor/morris/morris.min.js}"></script>
+
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/chart.js/Chart.bundle.min.js}"></script>
+
+    <script th:src="@{/vendor/gaugeJS/dist/gauge.min.js}"></script>
+
+    <script th:src="@{/vendor/flot/jquery.flot.js}"></script>
+    <script th:src="@{/vendor/flot/jquery.flot.resize.js}"></script>
+
+    <script th:src="@{/vendor/owl-carousel/js/owl.carousel.min.js}"></script>
+
+    <script th:src="@{/vendor/jqvmap/js/jquery.vmap.min.js}"></script>
+    <script th:src="@{/vendor/jquery.counterup/jquery.counterup.min.js}"></script>
+
+   <script th:src="@{/js/modaljs/main.js}"></script>
+   <script th:src="@{/js/modaljs/cliente.js}"></script>
+   <script th:src="@{/js/modaljs/servico.js}"></script>
+   <script th:src="@{/js/modaljs/agendamento.js}"></script>
+   <script th:src="@{/js/mascara/telefone.js}"></script>
+	
+	<script th:src="@{/js/validation/usuariosvalidation.js}"></script>
+	<script th:src="@{/js/validation/clientesvalidation.js}"></script>
+	<script th:src="@{/js/validation/servicosvalidation.js}"></script>
+	<script th:src="@{/js/validation/agendamentosvalidation.js}"></script>
+</body>
+</html>

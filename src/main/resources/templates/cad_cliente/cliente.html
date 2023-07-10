@@ -1,0 +1,333 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+	layout:decorate="~{fragments/layout}">
+
+
+<div layout:fragment="corpo">
+	<div class="content-body">
+		<!-- row -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">CADASTRO DE CLIENTES</h4>
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+									data-target="#clientePesquisaModal">
+									Pesquisar cliente
+							</button>
+							<button type="button" class="btn btn-success" data-toggle="modal"
+								data-target="#modalCliente">Cadastrar Clientes</button>
+						</div>
+
+						<div class="card-body">
+							<div class="table-responsive">
+								<div>
+									<table class="table table-striped table-hover table-sm">
+										<thead>
+											<tr style="font-size: 9pt; color: black;">
+												<th>#</th>
+												<th>Nome</th>
+												<th>Sexo</th>
+												<th>Nascimento</th>
+												<th>Telefone</th>
+												<th>RG</th>
+												<th>CEP</th>
+												<th>Editar</th>
+												<th>Excluir</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="clientes : ${listarCliente}" style="font-size: 9pt; color: black;">
+												<td th:text="${clientes.id}"></td>
+												<td th:text="${clientes.nome}"></td>
+												<td th:text="${clientes.sexo}"></td>
+												<td th:text="${clientes.datanascimento}"></td>
+												<td th:text="${clientes.telefone}"></td>
+												<td th:text="${clientes.rg}"></td>
+												<td th:text="${clientes.cep}"></td>
+
+													<td><a th:href="@{/buscarcliente/(id=${clientes.id})}"
+															class="btn btn-success btnEdit">Editar</a>
+													</td>
+
+													<td><a th:href="@{/deletarcliente/(id=${clientes.id})}"
+															class="btn btn-danger" id="deleteButton">Excluir</a></td>
+												</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<!-- PAGINAÇÃO TABELA CLIENTES -->
+									<nav aria-label="Page navigation example" style="color: black; font-size: 12px;">
+										
+										Total de clientes: [[${totalItems}]] | Página [[${currentPage}]] de
+										[[${totalPages}]]
+										
+										<ul class="pagination">
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{/cad_cliente/cliente/1}">Atual</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Atual</span>
+											</li>
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{'/cad_cliente/cliente/' + ${currentPage - 1}}">Anterior</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Anterior</span>
+											</li>
+											
+											<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}">
+												<a class="page-link" th:href="@{'/cad_cliente/cliente/' + ${i}}"
+														style="color: darkblue;">[[${i}]]</a></li>
+											
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_cliente/cliente/' + ${currentPage + 1}}">Próxima</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Próxima</span>
+											</li>
+											
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_cliente/cliente/' + ${totalPages}}">Última</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Última</span>
+											</li>
+										</ul>
+									</nav>
+									
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- INICIO DE MODAL CADASTRO DE CLIENTES -->
+	<div class="modal fade" id="modalCliente" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form th:action="@{/salvarCliente}" method="post" onsubmit="return validarCamposClientes()?true : false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">
+							CADASTRO DE CLIENTES</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="nome" style="color: black;">Nome</label>
+								<input type="text" class="form-control" id="nome" name="nome">
+								<small id="nome-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="sexo" style="color: black;">Sexo</label>
+								<select class="custom-select custom-select-lg mb-3" style="height: 40px;" id="sexo"
+									name="sexo">
+									<option value="MASCULINO">Masculino
+									</option>
+									<option value="FEMININO">Feminino
+									</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="datanascimento" style="color: black;">Data de
+									Nascimento</label>
+								<input type="date" class="form-control" id="datanascimento" name="datanascimento">
+								<small id="datanascimento-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="telefone" style="color: black;">Telefone</label>
+								<input type="text" class="form-control" id="telefone" name="telefone" 
+								maxlength="15" onkeyup="handlePhone(event)">
+								<small id="telefone-error" style="color: red;"></small>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="email" style="color: black;">Email</label>
+								<input type="text" class="form-control" id="email" name="email">
+								<small id="email-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="rg" style="color: black;">RG</label>
+								<input type="text" class="form-control" id="rg" name="rg">
+								<small id="rg-error" style="color: red;"></small>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="endereco" style="color: black;">Endereço</label>
+								<input type="text" class="form-control" id="endereco" name="endereco">
+								<small id="endereco-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="cep" style="color: black;">CEP</label>
+								<input type="text" class="form-control" id="cep" name="cep" onkeyup="handleZipCode(event)"
+									maxlength="9">
+								<small id="cep-error" style="color: red;"></small>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-success">Salvar</button>
+					</div>
+					<input type="hidden" id="id" name="id">
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- FIM DE MODAL DE CADASTRO DE CLIENTES -->
+
+<!-- INICIO DE MODAL CADASTRO DE CLIENTES -->
+	<div class="modal fade" id="editModalCliente" data-backdrop="static" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form th:action="@{/salvarCliente}" method="post">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">
+							EDITAR DE CLIENTES</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="nome" style="color: black;">Nome</label>
+								<input type="text" class="form-control" id="nomeEdit" name="nome">
+								<small id="nome-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="sexo" style="color: black;">Sexo</label>
+								<select class="custom-select custom-select-lg mb-3" style="height: 40px;" id="sexoEdit"
+									name="sexo">
+									<option value="MASCULINO">Masculino
+									</option>
+									<option value="FEMININO">Feminino
+									</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="datanascimento" style="color: black;">Data de
+									Nascimento</label>
+								<input type="date" class="form-control" id="datanascimentoEdit" name="datanascimento">
+								<small id="datanascimento-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="telefone" style="color: black;">Telefone</label>
+								<input type="text" class="form-control" id="telefoneEdit" name="telefone">
+								<small id="telefone-error" style="color: red;"></small>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="email" style="color: black;">Email</label>
+								<input type="text" class="form-control" id="emailEdit" name="email">
+								<small id="email-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="rg" style="color: black;">RG</label>
+								<input type="text" class="form-control" id="rgEdit" name="rg">
+								<small id="rg-error" style="color: red;"></small>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="endereco" style="color: black;">Endereço</label>
+								<input type="text" class="form-control" id="enderecoEdit" name="endereco">
+								<small id="endereco-error" style="color: red;"></small>
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="cep" style="color: black;">CEP</label>
+								<input type="text" class="form-control" id="cepEdit" name="cep">
+								<small id="cep-error" style="color: red;"></small>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-success">Salvar</button>
+					</div>
+					<input type="hidden" id="idEdit" name="id">
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- FIM DE MODAL DE CADASTRO DE CLIENTES -->
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Confirmar</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p style="color: black;">Você deseja excluir o cliente? </p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+					<a href="" id="delRef" class="btn btn-danger">Sim</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- MODAL PESQUISAR CLIENTE -->
+	<div class="modal fade" id="clientePesquisaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-backdrop="static">
+		<form th:action="@{/pesquisarcliente}" method="post">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">PESQUISA DE CLIENTE</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" aria-label="Recipient's username"
+								id="clientepesquisa" name="clientepesquisa" aria-describedby="basic-addon2">
+							<div class="input-group-append">
+								<button class="btn btn-success btnPesquisa" type="submit">Pesquisar</button>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+</html>

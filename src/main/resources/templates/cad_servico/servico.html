@@ -1,0 +1,232 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+	layout:decorate="~{fragments/layout}">
+
+
+<div layout:fragment="corpo">
+	<div class="content-body">
+		<!-- row -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">CADASTRO DE SERVIÇOS</h4>
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+									data-target="#servicoPesquisaModal">
+									Pesquisar serviço
+							</button>
+							<button type="button" class="btn btn-success" data-toggle="modal"
+								data-target="#modalServico">Cadastrar Serviços</button>
+						</div>
+
+						<div class="card-body">
+
+							<div class="table-responsive">
+								<div>
+									<table class="table table-striped table-hover table-sm">
+										<thead>
+											<tr style="font-size: 9pt; color: black;">
+												<th>#</th>
+												<th>Descrição</th>
+												<th>Valor</th>
+												<th>Editar</th>
+												<th>Excluir</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="servicos : ${listarServico}"
+												style="font-size: 9pt; color: black;">
+												<td th:text="${servicos.id}"></td>
+												<td th:text="${servicos.descricao}"></td>
+												<td th:text="${#strings.replace(#numbers.formatCurrency(servicos.valor), '.00', '')}"></td>
+
+												<td><a th:href="@{/buscarservico/(id=${servicos.id})}"
+														class="btn btn-success btnEdit">Editar</a>
+												</td>
+
+												<td><a th:href="@{/deletarservico/(id=${servicos.id})}"
+														class="btn btn-danger" id="deleteButton">Excluir</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								
+								<!-- PAGINAÇÃO TABELA AGENDAMENTO -->
+									<nav aria-label="Page navigation example" style="color: black; font-size: 12px;">
+										
+										Total de agendamentos: [[${totalItems}]] | Página [[${currentPage}]] de
+										[[${totalPages}]]
+										
+										<ul class="pagination">
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{/cad_agendamento/agendamento/1}">Atual</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Atual</span>
+											</li>
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage > 1}" 
+													th:href="@{'/cad_agendamento/agendamento/' + ${currentPage - 1}}">Anterior</a>
+												<span class="page-link" th:unless="${currentPage > 1}">Anterior</span>
+											</li>
+											
+											<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}">
+												<a class="page-link" th:href="@{'/cad_agendamento/agendamento/' + ${i}}"
+														style="color: darkblue;">[[${i}]]</a></li>
+											
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_agendamento/agendamento/' + ${currentPage + 1}}">Próxima</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Próxima</span>
+											</li>
+											
+											<li class="page-item">
+												<a class="page-link" th:if="${currentPage < totalPages}" 
+													th:href="@{'/cad_agendamento/agendamento/' + ${totalPages}}">Última</a>
+												<span class="page-link" th:unless="${currentPage < totalPages}">Última</span>
+											</li>
+										</ul>
+									</nav>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="card-body">
+			<!-- INICIO DE MODAL CADASTRO DE SERVIÇOS -->
+			<div class="modal fade" id="modalServico" data-backdrop="static" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<form th:action="@{/salvarServico}" method="post"
+					onsubmit="return validarCamposServicos()?true : false">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">CADASTRO DE SERVIÇOS</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="form-group col-md-6">
+										<label for="descricao" style="color: black;">Descrição do Serviço</label>
+										<input type="text" class="form-control" id="descricao" name="descricao">
+										<small id="descricao-error" style="color: red;"></small>
+									</div>
+
+									<div class="form-group col-md-6">
+										<label for="valor" style="color: black;">Valor</label>
+										<input type="text" class="form-control" id="valor" name="valor" onKeyUp="mascaraMoeda(this, event)">
+										<small id="valor-error" style="color: red;"></small>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+									<button type="submit" class="btn btn-success">Salvar</button>
+								</div>
+								<input type="hidden" id="id" name="id">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="card-body">
+			<!-- INICIO DE MODAL CADASTRO DE SERVIÇOS -->
+			<div class="modal fade" id="editModalServico" data-backdrop="static" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<form th:action="@{/atualizarservico}" method="put">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">CADASTRO DE SERVIÇOS</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="form-group col-md-6">
+										<label for="descricao" style="color: black;">Descrição do Serviço</label>
+										<input type="text" class="form-control" id="descricaoEdit" name="descricao">
+										<small id="descricao-error" style="color: red;"></small>
+									</div>
+
+									<div class="form-group col-md-6">
+										<label for="valor" style="color: black;">Valor</label>
+										<input type="text" class="form-control" id="valorEdit" name="valor" onKeyUp="mascaraMoeda(this, event)">
+										<small id="valor-error" style="color: red;"></small>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+									<button type="submit" class="btn btn-success">Salvar</button>
+								</div>
+								<input type="hidden" id="idEdit" name="id">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Confirmar</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p style="color: black;">Você deseja excluir o serviço? </p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+						<a href="" id="delRef" class="btn btn-danger">Sim</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- MODAL PESQUISAR SERVICO -->
+	<div class="modal fade" id="servicoPesquisaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-backdrop="static">
+		<form th:action="@{/pesquisarservico}" method="post">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">PESQUISA DE SERVIÇO</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" aria-label="Recipient's username"
+								id="servicopesquisa" name="servicopesquisa" aria-describedby="basic-addon2">
+							<div class="input-group-append">
+								<button class="btn btn-success btnPesquisa" type="submit">Pesquisar</button>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+		
+	</div>
+</div>
+
+</html>
