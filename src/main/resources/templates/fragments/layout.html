@@ -27,7 +27,7 @@
 
     <div id="main-wrapper">
         <div class="nav-header">
-            <a href="/" class="brand-logo">
+            <a href="/index" class="brand-logo">
                 <img class="brand-title" th:src="@{/images/corte-de-barba.png}" alt="">
                 <h4 style="color: white;">Bardearia Du Zé</h4>
             </a>
@@ -54,14 +54,7 @@
                                     <i class="mdi mdi-account"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="./app-profile.html" class="dropdown-item">
-                                        <i class="icon-user"></i>
-                                        <span class="ml-2">Profile </span>
-                                    </a>
-                                    <a href="./email-inbox.html" class="dropdown-item">
-                                        <i class="icon-envelope-open"></i>
-                                        <span class="ml-2">Inbox </span>
-                                    </a>
+                                
                                     <a href="/login" class="dropdown-item">
                                         <i class="icon-key"></i>
                                         <span class="ml-2">Logout </span>
@@ -87,32 +80,6 @@
                             <li><a href="/cad_cliente/cliente">Clientes</a></li>
                             <li><a href="/cad_agendamento/agendamento">Agendamentos</a></li>
                             <li><a href="/cad_servico/servico">Serviços</a></li>
-                        </ul>
-                        <!--
-                        <ul aria-expanded="false">
-                            <li><a href="./app-profile.html">Clientes</a></li>
-                            <li><a href="./app-profile.html">Agendamentos</a></li>
-                            <li><a href="./app-profile.html">Serviços</a></li>
-                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Email</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./email-compose.html">Compose</a></li>
-                                    <li><a href="./email-inbox.html">Inbox</a></li>
-                                    <li><a href="./email-read.html">Read</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./app-calender.html">Calendar</a></li>
-                        </ul>
-                        -->
-                    </li>
-                    
-                    <li class="nav-label">Relatórios</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-plug"></i><span class="nav-text">Relatórios</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="./uc-select2.html">Listar usuários</a></li>
-                            <li><a href="./uc-nestable.html">Listar clientes</a></li>
-                            <li><a href="./uc-noui-slider.html">Listar agendamentos</a></li>
-                            <li><a href="./uc-sweetalert.html">Listar serviços</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -171,5 +138,6 @@
 	<script th:src="@{/js/validation/clientesvalidation.js}"></script>
 	<script th:src="@{/js/validation/servicosvalidation.js}"></script>
 	<script th:src="@{/js/validation/agendamentosvalidation.js}"></script>
+	
 </body>
 </html>

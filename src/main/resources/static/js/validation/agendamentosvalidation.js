@@ -1,7 +1,7 @@
 function validarCamposAgendamentos() {
 
-	var cliente = document.getElementById('cliente');
-	var servico = document.getElementById('servico');
+	var cliente = document.getElementById('clientes');
+	var servico = document.getElementById('servicos');
 	var valor = document.getElementById('valor');
 
 	if (cliente.value === '') {
@@ -30,3 +30,13 @@ function validarCamposAgendamentos() {
 	
 		return true;
 }
+
+function exibirvalor() {
+	var valor = document.getElementById("valor");
+	
+		valor.value = "10.00";
+	
+}
+
+
+

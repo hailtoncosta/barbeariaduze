@@ -1,12 +1,14 @@
 package com.app.barbeariaduze.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -23,11 +25,11 @@ public class Agendamento implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_agendamento")
 	private Long id;
 	
-	private String cliente;
+	private BigDecimal valor;
 	
-	private String servico;
+	private String servicos;
 	
-	private Double valor;
+	private String clientes;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date hora = new Date();
@@ -42,11 +44,11 @@ public class Agendamento implements Serializable {
 		this.id = id;
 	}
 
-	public Double getValor() {
+	public BigDecimal getValor() {
 		return valor;
 	}
 
-	public void setValor(Double valor) {
+	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
 
@@ -66,23 +68,20 @@ public class Agendamento implements Serializable {
 		this.observacao = observacao;
 	}
 
-	public String getCliente() {
-		return cliente;
+	public String getServicos() {
+		return servicos;
 	}
 
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
+	public void setServicos(String servicos) {
+		this.servicos = servicos;
 	}
 
-	public String getServico() {
-		return servico;
+	public String getClientes() {
+		return clientes;
 	}
 
-	public void setServico(String servico) {
-		this.servico = servico;
+	public void setClientes(String clientes) {
+		this.clientes = clientes;
 	}
-	
-	
-
 	
 }

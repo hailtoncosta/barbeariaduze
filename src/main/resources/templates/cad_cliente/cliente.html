@@ -11,10 +11,7 @@
 					<div class="card">
 						<div class="card-header">
 							<h4 class="card-title">CADASTRO DE CLIENTES</h4>
-							<button type="button" class="btn btn-primary" data-toggle="modal"
-									data-target="#clientePesquisaModal">
-									Pesquisar cliente
-							</button>
+							
 							<button type="button" class="btn btn-success" data-toggle="modal"
 								data-target="#modalCliente">Cadastrar Clientes</button>
 						</div>
@@ -298,36 +295,6 @@
 		</div>
 	</div>
 	
-	<!-- MODAL PESQUISAR CLIENTE -->
-	<div class="modal fade" id="clientePesquisaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-		aria-hidden="true" data-backdrop="static">
-		<form th:action="@{/pesquisarcliente}" method="post">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">PESQUISA DE CLIENTE</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="input-group mb-3">
-							<input type="text" class="form-control" aria-label="Recipient's username"
-								id="clientepesquisa" name="clientepesquisa" aria-describedby="basic-addon2">
-							<div class="input-group-append">
-								<button class="btn btn-success btnPesquisa" type="submit">Pesquisar</button>
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-
 </div>
 
 </html>

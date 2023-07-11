@@ -43,21 +43,23 @@ public class AgendamentoController {
 	
 	@GetMapping("/cad_agendamento/agendamento/{pageNumber}")
 	public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage) {
+		
 		List<Servico> servicos = servicoService.listarServicos();
 		model.addAttribute("listarServico", servicos);
 		
 		List<Cliente> clientes = clienteService.listarClientes();
+		
 		model.addAttribute("listarCliente", clientes);
 		
 		Page<Agendamento> page = agendamentoService.findPage(currentPage);
 		int totalPages = page.getTotalPages();
 		long totalItems = page.getTotalElements();
-		List<Agendamento> listarAgendamento = page.getContent();
+		List<Agendamento> listarAgendamentos = page.getContent();
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("totalItems", totalItems);
-		model.addAttribute("listarAgendamento", listarAgendamento);
+		model.addAttribute("listarAgendamentos", listarAgendamentos);
 		
 		return "/cad_agendamento/agendamento";
 	}
@@ -65,8 +67,9 @@ public class AgendamentoController {
 	@PostMapping("/salvarAgendamento")
 	public String salvarAgendamento(Agendamento agendamento, Model model) {
 		agendamentoService.salvarAgendamento(agendamento);
-		List<Agendamento> agendamentos = agendamentoService.listarAgendamentos();
-		model.addAttribute("listarAgendamento", agendamentos);
+		
+		List<Agendamento> listarAgendamentos = agendamentoService.listarAgendamentos();
+		model.addAttribute("listarAgendamentos", listarAgendamentos);
 		
 		List<Servico> servicos = servicoService.listarServicos();
 		model.addAttribute("listarServico", servicos);
@@ -78,8 +81,8 @@ public class AgendamentoController {
 	}
 	
 	public String listarAgendamentos(Model model) {
-		List<Agendamento> agendamentos = agendamentoService.listarAgendamentos();
-		model.addAttribute("listarAgendamento", agendamentos);
+		List<Agendamento> listarAgendamentos = agendamentoService.listarAgendamentos();
+		model.addAttribute("listarAgendamentos", listarAgendamentos);
 		return "/cad_agendamento/agendamento";
 	}
 	
@@ -92,8 +95,9 @@ public class AgendamentoController {
 	@RequestMapping(value = "/atualizaragendamento", method = {RequestMethod.PUT, RequestMethod.GET})
 	public String atualizarAgendamento(Agendamento agendamento, Model model) {
 		agendamentoService.atualizarAgendamento(agendamento);
-		List<Agendamento> agendamentos = agendamentoService.listarAgendamentos();
-		model.addAttribute("listarAgendamento", agendamentos);
+		
+		List<Agendamento> listarAgendamentos = agendamentoService.listarAgendamentos();
+		model.addAttribute("listarAgendamentos", listarAgendamentos);
 		
 		List<Servico> servicos = servicoService.listarServicos();
 		model.addAttribute("listarServico", servicos);
@@ -107,8 +111,9 @@ public class AgendamentoController {
 	@RequestMapping(value = "/deletaragendamento/", method = {RequestMethod.DELETE, RequestMethod.GET})
 	public String deletarAgendamento(Long id, Model model) {
 		agendamentoService.deletarAgendamento(id);
-		List<Agendamento> agendamentos = agendamentoService.listarAgendamentos();
-		model.addAttribute("listarAgendamento", agendamentos);
+		
+		List<Agendamento> listarAgendamentos = agendamentoService.listarAgendamentos();
+		model.addAttribute("listarAgendamentos", listarAgendamentos);
 		
 		List<Servico> servicos = servicoService.listarServicos();
 		model.addAttribute("listarServico", servicos);

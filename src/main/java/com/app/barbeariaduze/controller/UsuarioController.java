@@ -101,6 +101,4 @@ public class UsuarioController {
 		return getOnePage(model, 1);
 	}
 
-	
-	
 }

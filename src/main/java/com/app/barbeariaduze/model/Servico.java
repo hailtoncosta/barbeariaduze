@@ -1,6 +1,7 @@
 package com.app.barbeariaduze.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Servico implements Serializable {
 	
 	private String descricao;
 	
-	private double valor;
+	private BigDecimal valor;
 	
 	public Long getId() {
 		return id;
@@ -40,12 +41,17 @@ public class Servico implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public double getValor() {
+	public BigDecimal getValor() {
 		return valor;
 	}
 
-	public void setValor(double valor) {
+	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+
+	@Override
+	public String toString() {
+		return "Servico [id=" + id + ", descricao=" + descricao + ", valor=" + valor + "]";
 	}
 
 }

@@ -2,7 +2,7 @@
 	layout:decorate="~{fragments/layout}">
 
 
-<id layout:fragment="corpo">
+<div layout:fragment="corpo">
 	<div class="content-body">
 		<!-- row -->
 		<div class="container-fluid">
@@ -11,10 +11,6 @@
 					<div class="card">
 						<div class="card-header">
 							<h4 class="card-title">CADASTRO DE AGENDAMENTOS</h4>
-							<button type="button" class="btn btn-primary" data-toggle="modal"
-									data-target="#agendamentoPesquisaModal">
-									Pesquisar agendamento
-							</button>
 							<button type="button" class="btn btn-success" data-toggle="modal"
 								data-target="#modalAgendamento">Cadastrar Agendamentos</button>
 						</div>
@@ -34,11 +30,11 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="agendamentos : ${listarAgendamento}"
+											<tr th:each="agendamentos : ${listarAgendamentos}"
 												style="font-size: 9pt; color: black;">
 												<td th:text="${agendamentos.id}"></td>
-												<td th:text="${agendamentos.cliente}"></td>
-												<td th:text="${agendamentos.servico}"></td>
+												<td th:text="${agendamentos.clientes}"></td>
+												<td th:text="${agendamentos.servicos}"></td>
 												<td th:text="${#strings.replace(#numbers.formatCurrency(agendamentos.valor), '.00', '')}"></td>
 												<td th:text="${agendamentos.observacao}"></td>
 
@@ -113,22 +109,22 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="form-group col-md-6">
-								<label for="cliente" style="color: black;">Cliente</label>
-								<select class="custom-select" id="cliente" name="cliente">
+								<label for="clientes" style="color: black;">Cliente</label>
+								<select class="custom-select" id="clientes" name="clientes">
 									<option value=""></option>
-									<option th:each="cliente : ${listarCliente}" th:value="${cliente.nome}"
-										th:text="${cliente.nome}">
+									<option th:each="clientes : ${listarCliente}" th:value="${clientes.nome}"
+										th:text="${clientes.nome}">
 									</option>
 								</select>
 								<small id="cliente-error" style="color: red;"></small>
 							</div>
 
 							<div class="form-group col-md-6">
-								<label for="servico" style="color: black;">Serviço</label>
-								<select class="custom-select" id="servico" name="servico">
+								<label for="servicos" style="color: black;">Serviço</label>
+								<select class="custom-select" id="servicos" name="servicos">
 									<option value=""></option>
-									<option th:each="servico : ${listarServico}" th:value="${servico.descricao}"
-										th:text="${servico.descricao}"></option>
+									<option th:each="servicos : ${listarServico}" th:value="${servicos.descricao}"
+										th:text="${servicos.descricao}"></option>
 								</select>
 								<small id="servico-error" style="color: red;"></small>
 							</div>
@@ -166,7 +162,7 @@
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">CADASTRO DE AGENDAMENTOS</h5>
+						<h5 class="modal-title" id="exampleModalLabel">EDITAR AGENDAMENTOS</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -175,10 +171,10 @@
 						<div class="row">
 							<div class="form-group col-md-6">
 								<label for="cliente">Cliente</label>
-								<select class="custom-select" id="clienteEdit" name="cliente">
+								<select class="custom-select" id="clienteEdit" name="clientes">
 									<option value=""></option>
-									<option th:each="cliente : ${listarCliente}" th:value="${cliente.nome}"
-										th:text="${cliente.nome}">
+									<option th:each="clientes : ${listarCliente}" th:value="${clientes.nome}"
+										th:text="${clientes.nome}">
 									</option>
 								</select>
 								<small id="cliente-error" style="color: red;"></small>
@@ -186,10 +182,10 @@
 
 							<div class="form-group col-md-6">
 								<label for="servico">Serviço</label>
-								<select class="custom-select" id="servicoEdit" name="servico">
+								<select class="custom-select" id="servicoEdit" name="servicos">
 									<option value=""></option>
-									<option th:each="servico : ${listarServico}" th:value="${servico.descricao}"
-										th:text="${servico.descricao}"></option>
+									<option th:each="servicos : ${listarServico}" th:value="${servicos.descricao}"
+										th:text="${servicos.descricao}"></option>
 								</select>
 								<small id="servico-error" style="color: red;"></small>
 							</div>
@@ -240,38 +236,8 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- MODAL PESQUISAR AGENDAMENTO -->
-	<div class="modal fade" id="agendamentoPesquisaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-		aria-hidden="true" data-backdrop="static">
-		<form th:action="@{/pesquisarcliente}" method="post">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">PESQUISA DE AGENDAMENTO</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="input-group mb-3">
-							<input type="text" class="form-control" aria-label="Recipient's username"
-								id="agendamentopesquisa" name=""agendamentopesquisa"" aria-describedby="basic-addon2">
-							<div class="input-group-append">
-								<button class="btn btn-success btnPesquisa" type="submit">Pesquisar</button>
-							</div>
-						</div>
 
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-
-</id>
+</div>
 
 
 </html>

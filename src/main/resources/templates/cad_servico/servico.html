@@ -11,10 +11,7 @@
 					<div class="card">
 						<div class="card-header">
 							<h4 class="card-title">CADASTRO DE SERVIÇOS</h4>
-							<button type="button" class="btn btn-primary" data-toggle="modal"
-									data-target="#servicoPesquisaModal">
-									Pesquisar serviço
-							</button>
+							
 							<button type="button" class="btn btn-success" data-toggle="modal"
 								data-target="#modalServico">Cadastrar Serviços</button>
 						</div>
@@ -54,34 +51,34 @@
 								<!-- PAGINAÇÃO TABELA AGENDAMENTO -->
 									<nav aria-label="Page navigation example" style="color: black; font-size: 12px;">
 										
-										Total de agendamentos: [[${totalItems}]] | Página [[${currentPage}]] de
+										Total de serviços: [[${totalItems}]] | Página [[${currentPage}]] de
 										[[${totalPages}]]
 										
 										<ul class="pagination">
 											<li class="page-item">
 												<a class="page-link" th:if="${currentPage > 1}" 
-													th:href="@{/cad_agendamento/agendamento/1}">Atual</a>
+													th:href="@{/cad_servico/servico/1}">Atual</a>
 												<span class="page-link" th:unless="${currentPage > 1}">Atual</span>
 											</li>
 											<li class="page-item">
 												<a class="page-link" th:if="${currentPage > 1}" 
-													th:href="@{'/cad_agendamento/agendamento/' + ${currentPage - 1}}">Anterior</a>
+													th:href="@{'/cad_servico/servico/' + ${currentPage - 1}}">Anterior</a>
 												<span class="page-link" th:unless="${currentPage > 1}">Anterior</span>
 											</li>
 											
 											<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}">
-												<a class="page-link" th:href="@{'/cad_agendamento/agendamento/' + ${i}}"
+												<a class="page-link" th:href="@{'/cad_servico/servico/' + ${i}}"
 														style="color: darkblue;">[[${i}]]</a></li>
 											
 											<li class="page-item">
 												<a class="page-link" th:if="${currentPage < totalPages}" 
-													th:href="@{'/cad_agendamento/agendamento/' + ${currentPage + 1}}">Próxima</a>
+													th:href="@{'/cad_servico/servico/' + ${currentPage + 1}}">Próxima</a>
 												<span class="page-link" th:unless="${currentPage < totalPages}">Próxima</span>
 											</li>
 											
 											<li class="page-item">
 												<a class="page-link" th:if="${currentPage < totalPages}" 
-													th:href="@{'/cad_agendamento/agendamento/' + ${totalPages}}">Última</a>
+													th:href="@{'/cad_servico/servico/' + ${totalPages}}">Última</a>
 												<span class="page-link" th:unless="${currentPage < totalPages}">Última</span>
 											</li>
 										</ul>
@@ -195,36 +192,6 @@
 				</div>
 			</div>
 		</div>
-		
-		<!-- MODAL PESQUISAR SERVICO -->
-	<div class="modal fade" id="servicoPesquisaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-		aria-hidden="true" data-backdrop="static">
-		<form th:action="@{/pesquisarservico}" method="post">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">PESQUISA DE SERVIÇO</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="input-group mb-3">
-							<input type="text" class="form-control" aria-label="Recipient's username"
-								id="servicopesquisa" name="servicopesquisa" aria-describedby="basic-addon2">
-							<div class="input-group-append">
-								<button class="btn btn-success btnPesquisa" type="submit">Pesquisar</button>
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
 		
 	</div>
 </div>

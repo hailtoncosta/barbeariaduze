@@ -35,7 +35,7 @@ public class AgendamentoService {
 
 	// Listar com paginação
 	public Page<Agendamento> findPage(int pageNumber) {
-		return agendamentoRepository.findAll(PageRequest.of(pageNumber - 1, 7, Sort.by("cliente")));
+		return agendamentoRepository.findAll(PageRequest.of(pageNumber - 1, 7, Sort.by("clientes")));
 	}
 
 	// Listar todos os agendamentos
